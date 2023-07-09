@@ -38326,8 +38326,7 @@ function draw_chest() {
 		h = -img.height;
 		ctxDrawImage (ctx, img, -w / 2 + x - 1 * scale, -h / 2 + y, w, h);
 	}
-
-	ctx.restore ();
+	ctx.restore();
 
 	this.action && HackSettings.DrawChestItems.enabled && (
 		ctx.save(),
@@ -38344,7 +38343,6 @@ function draw_chest() {
 		ctx.fillText("x" + this.info, user.cam.x + this.x - 32, user.cam.y + this.y + 20),
 		ctx.restore()
 		)
-	ctx.restore();
 };
 
 function draw_thornbush_seed() {
