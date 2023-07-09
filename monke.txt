@@ -46999,6 +46999,7 @@ function Item(type, pid, id, x, y, angle, action, info, speed, extra) {
 		case ITEMS.DIAMOND_SPIKE:
 		case ITEMS.AMETHYST_SPIKE:
 		case ITEMS.REIDITE_SPIKE:
+			this.ally = user.id === this.pid || FnUtils.checkAlly(this.pid)
 			this.draw = draw_simple_item;
 			this.hit = {
 				anim: new Utils.LinearAnimation(false, 1, 1, 0, 10, 10),
@@ -47068,6 +47069,7 @@ function Item(type, pid, id, x, y, angle, action, info, speed, extra) {
 		case ITEMS.DIAMOND_DOOR:
 		case ITEMS.AMETHYST_DOOR:
 		case ITEMS.REIDITE_DOOR:
+			this.ally = user.id === this.pid || FnUtils.checkAlly(this.pid)
 			this.draw = draw_door;
 			this.hit = {
 				anim: new Utils.LinearAnimation(false, 1, 1, 0, 10, 10),
