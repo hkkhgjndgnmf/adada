@@ -1,6 +1,190 @@
 
+let TimerTools = {
+    HPTimer: 0,
+    GaugeTimer: 0
+};
 
-console.log("BYPASSED XDXD")
+function CheatInterval () {
+
+    if (!client || !client.socket || client.socket.readyState !== 1) return;
+    let myPlayer = world.fast_units[user.uid];
+
+    if (myPlayer) {
+
+        if (HackSettings.AutoSpike.enabled) {
+            for (let e = 0, o = HackSettings.AutoSpike.preferences; e < o.length; e++) {
+                var i = o[e];
+                switch (i) {
+                    case "Reidite Spike":
+                        i = 213;
+                        break;
+                    case "Amethyst Spike":
+                        i = 117;
+                        break;
+                    case "Diamond Spike":
+                        i = 164;
+                        break;
+                    case "Gold Spike":
+                        i = 163;
+                        break;
+                    case "Stone Spike":
+                        i = 162;
+                        break;
+                    case "Wood Spike":
+                        i = 154;
+                        break;
+                    case "Wood Wall":
+                        i = 156;
+                        break;
+                    case "Nothing":
+                        i = -1;
+                }
+                if (i !== -1 && user.inv.n[i]) {
+                    var type = i;
+                    break;
+                }
+            }
+            if (type) {
+                let pi2 = Math.PI * 2, realAngle = Math.floor((((myPlayer.angle + pi2) % pi2) * 255) / pi2);
+
+                switch (HackSettings.AutoSpike.mode) {
+                    case false:
+                            client.socket.send(JSON.stringify([102, type, realAngle, 0]))
+                    break;
+
+                    case true:
+                        if(!window.HackSettings.AutoSpike.canSend) break;
+                        for (let extra = 0; extra <= HackSettings.AutoSpike.extra; extra += 1) {
+                            if (extra <= 2) {
+                                client.socket.send(JSON.stringify([102, type, realAngle, 0]));
+                            }
+                            client.socket.send(JSON.stringify([102, type, (extra + realAngle) % 255, 0]))
+                            client.socket.send(JSON.stringify([102, type, (realAngle - extra + 255) % 255, 0]))
+                        }
+                        window.HackSettings.AutoSpike.lastSend = performance.now();
+                    break;
+                }
+    
+            }
+        }
+    }
+}
+window.FnUtils = {
+    isPlayerHoldingWeapon: (a, b) => {
+        switch(a.right)  {
+            case 34:
+            case 18:
+            case 33:
+            case 15:
+            case 14:
+            case 13:
+            case 12:
+            case 16:
+            case 17:
+                return 2; //spear
+            case 57:
+            case 5:
+            case 6:
+            case 30:
+            case 62:
+            case 9:
+            case 0:
+            case 63:
+            case 19:
+                return 1; //sword
+            case 64:
+            case 65:
+            case 66:
+            case 67:
+            case 68:
+            case 70:
+            case 69:
+                return 3; //bow
+            case 45:
+                if (b) return 4; //super hammer
+            case -1:
+                if (b) return 5; //holds nothing
+
+        };
+        return 0;
+    },
+    saveSettings: () => {
+        for (let e in HackSettings)
+            localStorage.setItem(e + "Client", JSON.stringify(HackSettings[e]));
+    },
+    checkAlly: (id) => {
+        for (var i = 0; i < user.team.length; i++)
+            if (user.team[i] == id) return 1;
+        return 0
+    },
+    checkTotem: (id) => {
+        if (user.team[0] === id) return 1;
+        return 0;
+    },
+    updateAllys: () => {
+        for (let e = 0; e < world.units[0].length; e++) {
+            world.units[0][e].ally = user.id === world.units[0][e].pid || FnUtils.checkAlly(world.units[0][e].pid)
+        }
+        for (let e = 0; e < world.units[5].length; e++) {
+            world.units[5][e].ally = user.id === world.units[5][e].pid || FnUtils.checkAlly(world.units[5][e].pid)
+        }
+        for (let e = 0; e < world.units[12].length; e++) {
+            world.units[12][e].ally = user.id === world.units[12][e].pid || FnUtils.checkAlly(world.units[12][e].pid)
+        }
+        for (let e = 0; e < world.units[13].length; e++)  {
+            world.units[13][e].ally = user.id === world.units[13][e].pid || FnUtils.checkAlly(world.units[13][e].pid)
+        }
+        for (let e = 0; e < world.units[14].length; e++) {
+            world.units[14][e].ally = user.id === world.units[14][e].pid || FnUtils.checkAlly(world.units[14][e].pid)
+        }
+        for (let e = 0; e < world.units[20].length; e++) {
+            world.units[20][e].ally = user.id === world.units[20][e].pid || FnUtils.checkAlly(world.units[20][e].pid)
+        }
+        for (let e = 0; e < world.units[52].length; e++) {
+            world.units[52][e].ally = user.id === world.units[52][e].pid || FnUtils.checkAlly(world.units[52][e].pid)
+        }
+        for (let e = 0; e < world.units[45].length; e++) {
+            world.units[45][e].ally = user.id === world.units[45][e].pid || FnUtils.checkAlly(world.units[45][e].pid)
+        }
+        for (let e = 0; e < world.units[46].length; e++) {
+            world.units[46][e].ally = user.id === world.units[46][e].pid || FnUtils.checkAlly(world.units[46][e].pid)
+        }
+        for (let e = 0; e < world.units[47].length; e++) {
+            world.units[47][e].ally = user.id === world.units[47][e].pid || FnUtils.checkAlly(world.units[47][e].pid)
+        }
+        for (let e = 0; e < world.units[48].length; e++) {
+            world.units[48][e].ally = user.id === world.units[48][e].pid || FnUtils.checkAlly(world.units[48][e].pid)
+        }
+        for (let e = 0; e < world.units[49].length; e++) {
+            world.units[49][e].ally = user.id === world.units[49][e].pid || FnUtils.checkAlly(world.units[49][e].pid)
+        }
+        for (let e = 0; e < world.units[53].length; e++) {
+            world.units[53][e].ally = user.id === world.units[53][e].pid || FnUtils.checkAlly(world.units[53][e].pid)
+        }
+        for (let e = 0; e < world.units[10].length; e++) {
+            world.units[10][e].ally = user.id === world.units[10][e].pid || FnUtils.checkAlly(world.units[10][e].pid)
+        }
+        for (let e = 0; e < world.units[15].length; e++) {
+            world.units[15][e].ally = user.id === world.units[15][e].pid || FnUtils.checkAlly(world.units[15][e].pid)
+        }
+        for (let e = 0; e < world.units[16].length; e++) {
+            world.units[16][e].ally = user.id === world.units[16][e].pid || FnUtils.checkAlly(world.units[16][e].pid)
+        }
+        for (let e = 0; e < world.units[17].length; e++) {
+            world.units[17][e].ally = user.id === world.units[17][e].pid || FnUtils.checkAlly(world.units[17][e].pid)
+        }
+        for (let e = 0; e < world.units[21].length; e++) {
+            world.units[21][e].ally = user.id === world.units[21][e].pid || FnUtils.checkAlly(world.units[21][e].pid)
+        }
+        for (let e = 0; e < world.units[51].length; e++) {
+            world.units[51][e].ally = user.id === world.units[51][e].pid || FnUtils.checkAlly(world.units[51][e].pid)
+        }
+        for (let e = 0; e < world.units[11].length; e++) {
+            world.units[11][e].ally = user.id === world.units[11][e].pid || FnUtils.checkAlly(world.units[11][e].pid)
+        }
+    }
+}
+
 window.debuggablePlayers = new Array(105);
 window.globalData = [];
 
@@ -5313,6 +5497,62 @@ PREPROC_IMAGES = {};
 for (var i in IMAGES)
 	DUMP_IMAGES[i] = IMAGES[i];
 sprite = [];
+
+sprite[10000] = [WoodSpikeAlly, WoodSpikeAlly];
+sprite[10001] = [WoodSpikeEnemy, WoodSpikeEnemy];
+
+sprite[10002] = [StoneSpikeAlly, StoneSpikeAlly];
+sprite[10003] = [StoneSpikeEnemy, StoneSpikeEnemy];
+
+sprite[10004] = [GoldSpikeAlly, GoldSpikeAlly];
+sprite[10005] = [GoldSpikeEnemy, GoldSpikeEnemy];
+
+sprite[10006] = [DiamondSpikeAlly, DiamondSpikeAlly];
+sprite[10007] = [DiamondSpikeEnemy, DiamondSpikeEnemy];
+
+sprite[10008] = [AmethystSpikeAlly, AmethystSpikeAlly];
+sprite[10009] = [AmethystSpikeEnemy, AmethystSpikeEnemy];
+
+sprite[10010] = [ReiditeSpikeAlly, ReiditeSpikeAlly];
+sprite[10011] = [ReiditeSpikeEnemy, ReiditeSpikeEnemy];
+
+
+sprite[10012] = [WoodSpikeDoorAlly, WoodSpikeDoorAlly];
+sprite[10013] = [WoodSpikeDoorEnemy, WoodSpikeDoorEnemy];
+
+sprite[10014] = [StoneSpikeDoorAlly, StoneSpikeDoorAlly];
+sprite[10015] = [StoneSpikeDoorEnemy, StoneSpikeDoorEnemy];
+
+sprite[10016] = [GoldSpikeDoorAlly, GoldSpikeDoorAlly];
+sprite[10017] = [GoldSpikeDoorEnemy, GoldSpikeDoorEnemy];
+
+sprite[10018] = [DiamondSpikeDoorAlly, DiamondSpikeDoorAlly];
+sprite[10019] = [DiamondSpikeDoorEnemy, DiamondSpikeDoorEnemy];
+
+sprite[10020] = [AmethystSpikeDoorAlly, AmethystSpikeDoorAlly];
+sprite[10021] = [AmethystSpikeDoorEnemy, AmethystSpikeDoorEnemy];
+
+sprite[10022] = [ReiditeSpikeDoorAlly, ReiditeSpikeDoorAlly];
+sprite[10023] = [ReiditeSpikeDoorEnemy, ReiditeSpikeDoorEnemy];
+
+sprite[10024] = [WoodDoorAlly, WoodDoorAlly];
+sprite[10025] = [WoodDoorEnemy, WoodDoorEnemy];
+
+sprite[10026] = [StoneDoorAlly, StoneDoorAlly];
+sprite[10027] = [StoneDoorEnemy, StoneDoorEnemy];
+
+sprite[10028] = [GoldDoorAlly, GoldDoorAlly];
+sprite[10029] = [GoldDoorEnemy, GoldDoorEnemy];
+
+sprite[10030] = [DiamondDoorAlly, DiamondDoorAlly];
+sprite[10031] = [DiamondDoorEnemy, DiamondDoorEnemy];
+
+sprite[10032] = [AmethystDoorAlly, AmethystDoorAlly];
+sprite[10033] = [AmethystDoorEnemy, AmethystDoorEnemy];
+
+sprite[10034] = [ReiditeDoorAlly, ReiditeDoorAlly];
+sprite[10035] = [ReiditeDoorEnemy, ReiditeDoorEnemy];
+
 RARITY = {};
 RARITY.FREE = 0;
 RARITY.WOOD = 1;
@@ -37995,6 +38235,21 @@ function draw_gauges() {
 		ctx.fillStyle = "#9C4036";
 		ctx.fillRect(this.translate.x + (517 * scale), this.translate.y + (17 * scale), (( user.gauges.warm.x) * 178) * scale, 18 * scale);
 	}
+	if (HackSettings.BarTimers.enabled) {
+        let date = Date.now();
+        ctx.save();
+        ctx.font = '34px Baloo Paaji';
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "red";
+        ctx.lineWidth = 7;
+        ctx.strokeText(user.gauges.realhp + "hp", this.translate.x - 80 * scale, this.translate.y + 35 * scale);
+        ctx.fillText(user.gauges.realhp + "hp", this.translate.x - 80 * scale, this.translate.y + 35 * scale);
+        ctx.strokeText(Math.floor(11 - (date - TimerTools.HPTimer) / 1000) + "s", this.translate.x + 216 * scale, this.translate.y + 35 * scale);
+        ctx.fillText(Math.floor(11 - (date - TimerTools.HPTimer) / 1000) + "s", this.translate.x + 216 * scale, this.translate.y + 35 * scale);
+        ctx.strokeText(Math.floor(6 - (date - TimerTools.GaugeTimer) / 1000) + "s", this.translate.x + 460 * scale, this.translate.y + 35 * scale);
+        ctx.fillText(Math.floor(6 - (date - TimerTools.GaugeTimer) / 1000) + "s", this.translate.x + 460 * scale, this.translate.y + 35 * scale);
+        ctx.restore();
+    };
 	if (user.gauges.thirst.x < 0.35) {
 		ctx.fillStyle = "#001A57";
 		ctx.globalAlpha = user.gauges.warn_thirst.v;
@@ -38066,11 +38321,29 @@ function draw_chest() {
 	h = -img.height;
 	ctxDrawImage(ctx, img, (-w / 2) + x, (-h / 2) + y, w, h);
 	if (this.lock) {
-		img = sprite[SPRITE.LOCK][world.time];
+		img = HackSettings.DrawChestItems.enabled ? sprite[SPRITE.CHEST][2] : sprite[SPRITE.LOCK][world.time];
 		w = -img.width;
 		h = -img.height;
-		ctxDrawImage(ctx, img, ((-w / 2) + x) - (1 * scale), (-h / 2) + y, w, h);
+		ctxDrawImage (ctx, img, -w / 2 + x - 1 * scale, -h / 2 + y, w, h);
 	}
+
+	ctx.restore ();
+
+	this.action && HackSettings.DrawChestItems.enabled && (
+		ctx.save(),
+		ctx.globalAlpha = 0.9,
+		ctxDrawImage(ctx, game.chest_buttons[this.action / 2 - 1].info.img[0], user.cam.x + this.x + 25, user.cam.y + this.y + 15, w + 20, h + 20),
+		ctx.globalAlpha = 1, 
+		ctx.font = "20px Baloo Paaji", 
+		ctx.strokeStyle = "black", 
+		ctx.lineWidth = 7, 
+		ctx.strokeText(this.action / 2 - 1, user.cam.x + this.x - 32, user.cam.y + this.y - 12),
+	    ctx.strokeText("x" + this.info, user.cam.x +this.x - 32, user.cam.y + this.y + 20), 
+		ctx.fillStyle = "white", ctx.fillText(this.action / 2 - 1, user.cam.x + this.x - 32, user.cam.y + this.y - 12),
+		ctx.fillText(this.action / 2 - 1, user.cam.x + this.x - 32, user.cam.y + this.y - 12),
+		ctx.fillText("x" + this.info, user.cam.x + this.x - 32, user.cam.y + this.y + 20),
+		ctx.restore()
+		)
 	ctx.restore();
 };
 
@@ -41491,57 +41764,59 @@ function draw_world() {
 			draw_transition(spell[i]);
 
 	}
-	var players = world.units[ITEMS.PLAYERS];
-	for (var i = 0; i < players.length; i++) {
-		var p = players[i];
-		if (((((players[i].vehicle !== INV.BABY_DRAGON) && (players[i].vehicle !== INV.BABY_LAVA)) && (players[i].vehicle !== INV.HAWK)) && (players[i].vehicle !== INV.PLANE)) && (players[i].vehicle !== INV.NIMBUS)) {
-			if (p.tower === 0) {
-				if (p.tower_fx > 0.001) {
-					p.tower_fx = Utils.lerp(p.tower_fx, 0, 0.018);
-					var spd = 1 + (0.18 * Math.min(1, Math.max(p.tower_fx, 0) / 100));
-					ctx.save();
-					ctx.scale(spd, spd);
-					user.cam.x /= spd;
-					user.cam.y /= spd;
-					p.x /= spd;
-					p.y /= spd;
-					p.r.x /= spd;
-					p.r.y /= spd;
-					p.draw_vehicle();
-					p.draw();
-					user.cam.x *= spd;
-					user.cam.y *= spd;
-					p.x *= spd;
-					p.y *= spd;
-					p.r.x *= spd;
-					p.r.y *= spd;
-					ctx.restore();
-				} else {
-					p.fly = 0;
-					p.draw_vehicle();
-					p.draw();
+	if (!HackSettings.DrawPlayerOnTop.enabled) {
+		var players = world.units[ITEMS.PLAYERS];
+		for (var i = 0; i < players.length; i++) {
+			var p = players[i];
+			if (((((players[i].vehicle !== INV.BABY_DRAGON) && (players[i].vehicle !== INV.BABY_LAVA)) && (players[i].vehicle !== INV.HAWK)) && (players[i].vehicle !== INV.PLANE)) && (players[i].vehicle !== INV.NIMBUS)) {
+				if (p.tower === 0) {
+					if (p.tower_fx > 0.001) {
+						p.tower_fx = Utils.lerp(p.tower_fx, 0, 0.018);
+						var spd = 1 + (0.18 * Math.min(1, Math.max(p.tower_fx, 0) / 100));
+						ctx.save();
+						ctx.scale(spd, spd);
+						user.cam.x /= spd;
+						user.cam.y /= spd;
+						p.x /= spd;
+						p.y /= spd;
+						p.r.x /= spd;
+						p.r.y /= spd;
+						p.draw_vehicle();
+						p.draw();
+						user.cam.x *= spd;
+						user.cam.y *= spd;
+						p.x *= spd;
+						p.y *= spd;
+						p.r.x *= spd;
+						p.r.y *= spd;
+						ctx.restore();
+					} else {
+						p.fly = 0;
+						p.draw_vehicle();
+						p.draw();
+					}
 				}
+			} else if (p.speed <= 180) {
+				ctx.save();
+				var spd = 1 + (0.35 * Math.min(1, Math.max(p.vehicle_fx5 - 30, 0) / 180));
+				ctx.scale(spd, spd);
+				user.cam.x /= spd;
+				user.cam.y /= spd;
+				p.x /= spd;
+				p.y /= spd;
+				p.r.x /= spd;
+				p.r.y /= spd;
+				p.fly = 0;
+				p.draw_vehicle();
+				p.draw();
+				user.cam.x *= spd;
+				user.cam.y *= spd;
+				p.x *= spd;
+				p.y *= spd;
+				p.r.x *= spd;
+				p.r.y *= spd;
+				ctx.restore();
 			}
-		} else if (p.speed <= 180) {
-			ctx.save();
-			var spd = 1 + (0.35 * Math.min(1, Math.max(p.vehicle_fx5 - 30, 0) / 180));
-			ctx.scale(spd, spd);
-			user.cam.x /= spd;
-			user.cam.y /= spd;
-			p.x /= spd;
-			p.y /= spd;
-			p.r.x /= spd;
-			p.r.y /= spd;
-			p.fly = 0;
-			p.draw_vehicle();
-			p.draw();
-			user.cam.x *= spd;
-			user.cam.y *= spd;
-			p.x *= spd;
-			p.y *= spd;
-			p.r.x *= spd;
-			p.r.y *= spd;
-			ctx.restore();
 		}
 	}
 	var bed = world.units[ITEMS.BED];
@@ -41656,90 +41931,100 @@ function draw_world() {
 	var bread_oven = world.units[ITEMS.BREAD_OVEN];
 	for (var i = 0; i < bread_oven.length; i++)
 		draw_transition(bread_oven[i]);
-	var door = world.units[ITEMS.WOOD_DOOR];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.DOOR_WOOD_CLOSE);
-
-		door[i].draw_life(door[i].info);
-	}
-	var door = world.units[ITEMS.STONE_DOOR];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.DOOR_STONE_CLOSE);
-
-		door[i].draw_life(door[i].info);
-	}
-	var door = world.units[ITEMS.GOLD_DOOR];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.DOOR_GOLD_CLOSE);
-
-		door[i].draw_life(door[i].info);
-	}
-	var door = world.units[ITEMS.DIAMOND_DOOR];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.DOOR_DIAMOND_CLOSE);
-
-		door[i].draw_life(door[i].info);
-	}
-	var door = world.units[ITEMS.AMETHYST_DOOR];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.DOOR_AMETHYST_CLOSE);
-
-		door[i].draw_life(door[i].info);
-	}
-	var door = world.units[ITEMS.REIDITE_DOOR];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.REIDITE_DOOR);
-
-		door[i].draw_life(door[i].info);
-	}
-	var door = world.units[ITEMS.WOOD_DOOR_SPIKE];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.WOOD_DOOR_SPIKE);
-
-		door[i].draw_life(door[i].info);
-	}
-	var door = world.units[ITEMS.STONE_DOOR_SPIKE];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.STONE_DOOR_SPIKE);
-
-		door[i].draw_life(door[i].info);
-	}
-	var door = world.units[ITEMS.GOLD_DOOR_SPIKE];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.GOLD_DOOR_SPIKE);
-
-		door[i].draw_life(door[i].info);
-	}
-	var door = world.units[ITEMS.DIAMOND_DOOR_SPIKE];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.DIAMOND_DOOR_SPIKE);
-
-		door[i].draw_life(door[i].info);
-	}
-	var door = world.units[ITEMS.AMETHYST_DOOR_SPIKE];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.AMETHYST_DOOR_SPIKE);
-
-		door[i].draw_life(door[i].info);
-	}
-	var door = world.units[ITEMS.REIDITE_DOOR_SPIKE];
-	for (var i = 0; i < door.length; i++) {
-		if (door[i].extra == 0)
-			draw_transition(door[i], SPRITE.REIDITE_DOOR_SPIKE);
-
-		door[i].draw_life(door[i].info);
-	}
+		var door = world.units[ITEMS.WOOD_DOOR];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10024 : 10025 : SPRITE.DOOR_WOOD_CLOSE);
+			door[i].draw_life (door[i].info);
+		}
+	
+		/* Draw Stone Door */
+		var door = world.units[ITEMS.STONE_DOOR];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10026 : 10027 : SPRITE.DOOR_STONE_CLOSE);
+			door[i].draw_life (door[i].info);
+		}
+	
+		/* Draw Gold Door */
+		var door = world.units[ITEMS.GOLD_DOOR];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10028 : 10029 : SPRITE.DOOR_GOLD_CLOSE);
+			door[i].draw_life (door[i].info);
+		}
+	
+		/* Draw Diamond Door */
+		var door = world.units[ITEMS.DIAMOND_DOOR];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10030 : 10031 : SPRITE.DOOR_DIAMOND_CLOSE);
+			door[i].draw_life (door[i].info);
+		}
+	
+		/* Draw Amethyst Door */
+		var door = world.units[ITEMS.AMETHYST_DOOR];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10032 : 10033 : SPRITE.DOOR_AMETHYST_CLOSE);
+			door[i].draw_life (door[i].info);
+		}
+	
+		/* Draw Amethyst Door */
+		var door = world.units[ITEMS.REIDITE_DOOR];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10034 : 10035 : SPRITE.REIDITE_DOOR);
+			door[i].draw_life (door[i].info);
+		}
+	
+		/* Draw Wood Door */
+		var door = world.units[ITEMS.WOOD_DOOR_SPIKE];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10012 : 10013 : SPRITE.WOOD_DOOR_SPIKE);
+			door[i].draw_life (door[i].info);
+		}
+	
+		/* Draw Stone Door */
+		var door = world.units[ITEMS.STONE_DOOR_SPIKE];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10014 : 10015 : SPRITE.STONE_DOOR_SPIKE);
+			door[i].draw_life (door[i].info);
+		}
+	
+		/* Draw Gold Door */
+		var door = world.units[ITEMS.GOLD_DOOR_SPIKE];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10016 : 10017 : SPRITE.GOLD_DOOR_SPIKE);
+			door[i].draw_life (door[i].info);
+		}
+	
+		/* Draw Diamond Door */
+		var door = world.units[ITEMS.DIAMOND_DOOR_SPIKE];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10018 : 10019 : SPRITE.DIAMOND_DOOR_SPIKE);
+			door[i].draw_life (door[i].info);
+		}
+	
+		/* Draw Amethyst Door */
+		var door = world.units[ITEMS.AMETHYST_DOOR_SPIKE];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10020 : 10021 : SPRITE.AMETHYST_DOOR_SPIKE);
+			door[i].draw_life (door[i].info);
+		}
+	
+		/* Draw Reidite Door */
+		var door = world.units[ITEMS.REIDITE_DOOR_SPIKE];
+		for (var i = 0 ; i < door.length ; i++) {
+			if (door[i].extra == 0)
+				draw_transition (door[i], HackSettings.ColoredSpikes.enabled ? door[i].ally ? 10022 : 10023 : SPRITE.REIDITE_DOOR_SPIKE);
+			door[i].draw_life (door[i].info);
+		}
 	var wall = world.units[ITEMS.WALL];
 	for (var i = 0; i < wall.length; i++) {
 		draw_transition(wall[i], SPRITE.WALL);
@@ -41770,36 +42055,46 @@ function draw_world() {
 		draw_transition(wall[i], SPRITE.REIDITE_WALL);
 		wall[i].draw_life(wall[i].info);
 	}
-	var spike = world.units[ITEMS.SPIKE];
-	for (var i = 0; i < spike.length; i++) {
-		draw_transition(spike[i], SPRITE.SPIKE);
-		spike[i].draw_life(spike[i].info);
-	}
-	var spike = world.units[ITEMS.STONE_SPIKE];
-	for (var i = 0; i < spike.length; i++) {
-		draw_transition(spike[i], SPRITE.STONE_SPIKE);
-		spike[i].draw_life(spike[i].info);
-	}
-	var spike = world.units[ITEMS.GOLD_SPIKE];
-	for (var i = 0; i < spike.length; i++) {
-		draw_transition(spike[i], SPRITE.GOLD_SPIKE);
-		spike[i].draw_life(spike[i].info);
-	}
-	var spike = world.units[ITEMS.DIAMOND_SPIKE];
-	for (var i = 0; i < spike.length; i++) {
-		draw_transition(spike[i], SPRITE.DIAMOND_SPIKE);
-		spike[i].draw_life(spike[i].info);
-	}
-	var spike = world.units[ITEMS.AMETHYST_SPIKE];
-	for (var i = 0; i < spike.length; i++) {
-		draw_transition(spike[i], SPRITE.AMETHYST_SPIKE);
-		spike[i].draw_life(spike[i].info);
-	}
-	var spike = world.units[ITEMS.REIDITE_SPIKE];
-	for (var i = 0; i < spike.length; i++) {
-		draw_transition(spike[i], SPRITE.REIDITE_SPIKE);
-		spike[i].draw_life(spike[i].info);
-	}
+    var spike = world.units[ITEMS.SPIKE];
+    for (var i = 0 ; i < spike.length ; i++) {
+        draw_transition (spike[i], HackSettings.ColoredSpikes.enabled ? spike[i].ally ? 10000 : 10001 : SPRITE.SPIKE);
+        spike[i].draw_life (spike[i].info);
+    }
+
+    /* Draw Stone Spike */
+    var spike = world.units[ITEMS.STONE_SPIKE];
+    for (var i = 0 ; i < spike.length ; i++) {
+        draw_transition (spike[i], HackSettings.ColoredSpikes.enabled ? spike[i].ally ? 10002 : 10003 : SPRITE.STONE_SPIKE);
+        spike[i].draw_life (spike[i].info);
+    }
+
+    /* Draw Gold Spike */
+    var spike = world.units[ITEMS.GOLD_SPIKE];
+    for (var i = 0 ; i < spike.length ; i++) {
+        draw_transition (spike[i], HackSettings.ColoredSpikes.enabled ? spike[i].ally ? 10004 : 10005 : SPRITE.GOLD_SPIKE);
+        spike[i].draw_life (spike[i].info);
+    }
+
+    /* Draw Diamond Spike */
+    var spike = world.units[ITEMS.DIAMOND_SPIKE];
+    for (var i = 0 ; i < spike.length ; i++) {
+        draw_transition (spike[i], HackSettings.ColoredSpikes.enabled ? spike[i].ally ? 10006 : 10007 : SPRITE.DIAMOND_SPIKE);
+        spike[i].draw_life (spike[i].info);
+    }
+
+    /* Draw Amethyst Spike */
+    var spike = world.units[ITEMS.AMETHYST_SPIKE];
+    for (var i = 0 ; i < spike.length ; i++) {
+        draw_transition (spike[i], HackSettings.ColoredSpikes.enabled ? spike[i].ally ? 10008 : 10009 : SPRITE.AMETHYST_SPIKE);
+        spike[i].draw_life (spike[i].info);
+    }
+
+    /* Draw Reidite Spike */
+    var spike = world.units[ITEMS.REIDITE_SPIKE];
+    for (var i = 0 ; i < spike.length ; i++) {
+        draw_transition (spike[i], HackSettings.ColoredSpikes.enabled ? spike[i].ally ? 10010 : 10011 : SPRITE.REIDITE_SPIKE);
+        spike[i].draw_life (spike[i].info);
+    }
 	var well = world.units[ITEMS.WELL];
 	for (var i = 0; i < well.length; i++) {
 		var w = well[i];
@@ -41979,6 +42274,61 @@ function draw_world() {
 	for (var i = 0; i < vulture.length; i++)
 		draw_transition(vulture[i], SPRITE.VULTURE, SPRITE.HURT_VULTURE);
 	__effect += delta * 15;
+	if (HackSettings.DrawPlayerOnTop.enabled) {
+		var players = world.units[ITEMS.PLAYERS];
+		for (var i = 0; i < players.length; i++) {
+			var p = players[i];
+			if (((((players[i].vehicle !== INV.BABY_DRAGON) && (players[i].vehicle !== INV.BABY_LAVA)) && (players[i].vehicle !== INV.HAWK)) && (players[i].vehicle !== INV.PLANE)) && (players[i].vehicle !== INV.NIMBUS)) {
+				if (p.tower === 0) {
+					if (p.tower_fx > 0.001) {
+						p.tower_fx = Utils.lerp(p.tower_fx, 0, 0.018);
+						var spd = 1 + (0.18 * Math.min(1, Math.max(p.tower_fx, 0) / 100));
+						ctx.save();
+						ctx.scale(spd, spd);
+						user.cam.x /= spd;
+						user.cam.y /= spd;
+						p.x /= spd;
+						p.y /= spd;
+						p.r.x /= spd;
+						p.r.y /= spd;
+						p.draw_vehicle();
+						p.draw();
+						user.cam.x *= spd;
+						user.cam.y *= spd;
+						p.x *= spd;
+						p.y *= spd;
+						p.r.x *= spd;
+						p.r.y *= spd;
+						ctx.restore();
+					} else {
+						p.fly = 0;
+						p.draw_vehicle();
+						p.draw();
+					}
+				}
+			} else if (p.speed <= 180) {
+				ctx.save();
+				var spd = 1 + (0.35 * Math.min(1, Math.max(p.vehicle_fx5 - 30, 0) / 180));
+				ctx.scale(spd, spd);
+				user.cam.x /= spd;
+				user.cam.y /= spd;
+				p.x /= spd;
+				p.y /= spd;
+				p.r.x /= spd;
+				p.r.y /= spd;
+				p.fly = 0;
+				p.draw_vehicle();
+				p.draw();
+				user.cam.x *= spd;
+				user.cam.y *= spd;
+				p.x *= spd;
+				p.y *= spd;
+				p.r.x *= spd;
+				p.r.y *= spd;
+				ctx.restore();
+			}
+		}
+	}
 	if (__effect > 60)
 		__effect -= 60;
 
@@ -44063,6 +44413,9 @@ window.NetworkClient = function() {
         user.craft.update();
     };
 	this.gauges = function (life, food, cold, thirst, oxygen, warm, bandage) {
+		if (Math.floor(11 - (Date.now() - TimerTools.HPTimer) / 1e3) < 5 || life / 100 > user.gauges.l) TimerTools.HPTimer = new Date().getTime();
+        TimerTools.GaugeTimer = new Date().getTime();
+		user.gauges.realhp = life * 2;
 		user.gauges.l = life / 100;
 		user.gauges.h = food / 100;
 		user.gauges.c = cold / 100;
@@ -44081,6 +44434,7 @@ window.NetworkClient = function() {
 		game.quests.modify(id, 3);
 	};
 	this.gauges_life = function (life, bandage) {
+		user.gauges.realhp = life * 2;
 		user.gauges.l = life / 100;
 		user.bandage = bandage;
 	};
@@ -45067,6 +45421,7 @@ window.NetworkClient = function() {
 		this.new_alert(LANG[TEXT.JOIN_TEAM]);
 		for (var i = 1; i < ui8.length; i++)
 			user.team.push(ui8[i]);
+		FnUtils.updateAllys();
 	};
 	this.new_member_team = function (id) {
 		this.new_alert(world.players[id].nickname + LANG[TEXT.JOINED_TEAM]);
@@ -45074,6 +45429,7 @@ window.NetworkClient = function() {
 		var div = document.getElementById("team_box");
 		if ((game.team_buttons_id != -1) && (div.style.display == "inline-block"))
 			game.team_buttons[game.team_buttons_id].action();
+	    FnUtils.updateAllys();
 
 	};
 	this.destroy_team = function () {
@@ -45081,6 +45437,7 @@ window.NetworkClient = function() {
 		user.totem.wait = true;
 		user.team = [];
 		document.getElementById("team_box").style.display = "none";
+		FnUtils.updateAllys();
 	};
 	this.exclude_team = function (id) {
 		if (id == user.id) {
@@ -45101,6 +45458,7 @@ window.NetworkClient = function() {
 				game.team_buttons[game.team_buttons_id].action();
 
 		}
+		FnUtils.updateAllys();
 	};
 	this.steal_token = function (pid) {
 		user.alive = false;
@@ -45121,12 +45479,16 @@ window.NetworkClient = function() {
 		user.die.bank = Utils.simplify_number(score);
 		user.die.kill = kill;
 		this.new_alert(LANG[TEXT.YOU_DEAD]);
-		if (this._current_id != this.socket._current_id)
-			return;
-
-		this._current_id++;
-		game.quit(scoreboard.run);
-		this.socket.close();
+        if (!HackSettings.AutoRespawn.enabled) {
+            (this._current_id == this.socket._current_id) && (this._current_id++, this.socket.close(), game.quit(scoreboard.run))
+        } else {
+            this._current_id++;
+            this.socket.close();
+            ui.waiting = false;
+            setTimeout(() =>{
+                this.connect()
+            }, 500)
+        }
 		window.aiptag["cmd"]["display"].push(function () {
 			window.aipDisplayTag["display"]("MFN_starve-io_300x250");
 		});
@@ -45185,6 +45547,7 @@ window.NetworkClient = function() {
 		game.show_clock = 1;
 		game.show_quest = 1;
 		game.show_market = 1;
+		user.gauges.realhp = 200;
 		user.alive = true;
 		user.inv.drag.stop();
 		user.craft.can_craft = [];
@@ -45426,6 +45789,9 @@ window.NetworkClient = function() {
 			ui.quit(game.run);
 
 		}
+		FnUtils.updateAllys();
+        TimerTools.HPTimer = new Date().getTime();
+        TimerTools.GaugeTimer = new Date().getTime();
 	};
 	this.connect = function () {
 		
@@ -48451,6 +48817,7 @@ function User() {
 		c: 1,
 		l: 1,
 		h: 1,
+		realhp: 200,
 		t: 1,
 		o: 1,
 		wa: 1,
@@ -54996,6 +55363,8 @@ function Game(can, ctx) {
 		this.draw_UI();
 	};
 	this.trigger_keyup = function (evt) {
+		evt.code === HackSettings.AutoSpike.key && !user.chat.open && !user.terminal.open && (HackSettings.AutoSpike.enabled = false)
+
 		if (user.chat.open && (evt.keyCode === 27))
 			user.chat.quit();
 		else if (user.terminal.open && (evt.keyCode === 27))
@@ -55029,6 +55398,23 @@ function Game(can, ctx) {
 		keyboard.up(evt);
 	};
 	this.trigger_keydown = function (evt) {
+		let myPlayer = world.fast_units[user.uid];
+
+        evt.code === HackSettings.AutoSpike.key && !user.chat.open && !user.terminal.open && (HackSettings.AutoSpike.enabled = true)
+        evt.code === HackSettings.AutoSpike.changeModeKey && !user.chat.open && !user.terminal.open && (HackSettings.AutoSpike.mode = !HackSettings.AutoSpike.mode)
+
+
+
+        if (client.socket && client.socket.readyState === 1 && evt.code === HackSettings.DropSword.key && !user.chat.open && !user.terminal.open) {
+            if (myPlayer) {
+
+                if(FnUtils.isPlayerHoldingWeapon(myPlayer, false) == 1 || FnUtils.isPlayerHoldingWeapon(myPlayer, false) == 2) {
+                    client.socket.send(JSON.stringify([6, myPlayer.right]))
+                }
+
+            }
+        }
+
 		keyboard.down(evt);
 		if (((evt.keyCode == 8) && !user.chat.open) && !user.terminal.open)
 			evt.preventDefault();
@@ -56864,22 +57250,54 @@ var loader = new Loader(can, ctx, function () {
 });
 
 function draw(timestamp) {
-	requestAnimationFrame(draw);
-	delta = (timestamp - old_timestamp) / 1000;
-	old_timestamp = timestamp;
-	delta = (delta > 1) ? 1 : delta;
-	if (game.is_run) {
-		game.draw();
-	} else {
-		ctx.clearRect(0, 0, canw, canh);
-		if (loader.is_run)
-			loader.draw();
-		else if (ui.is_run)
-			ui.draw();
-		else if (scoreboard.is_run)
-			scoreboard.draw();
 
-	}
+    requestAnimationFrame(draw);
+    if (timestamp - window.HackSettings.lastExec > window.HackSettings.ExecDelay) {
+        window.HackSettings.log && console.log("Delay: ", Math.floor(timestamp - window.HackSettings.lastExec))
+        CheatInterval();
+        window.HackSettings.lastExec = timestamp;
+    }
+    if (performance.now() - window.HackSettings.AutoSpike.lastSend >= window.HackSettings.AutoSpike.delay) {
+        window.HackSettings.AutoSpike.canSend = true;
+    } else {
+        window.HackSettings.AutoSpike.canSend = false;
+    }
+    delta = (timestamp - old_timestamp) / 1000;
+    old_timestamp = timestamp;
+    delta = (delta > 1) ? 1 : delta;
+    if (game.is_run) {
+        game.draw();
+        if (HackSettings.ListEnabledHacks.enabled) {
+            ctx.save();
+            let e = 15;
+            for (hack in HackSettings) {
+                if (HackSettings[hack].draw && HackSettings[hack].enabled) {
+                    ctx.font = "18px Baloo Paaji";
+                    ctx.strokeStyle = "black";
+                    ctx.lineWidth = 7;
+                    ctx.fillStyle = "red";
+                    if (hack == "AutoSpike") {
+                        ctx.strokeText(hack + `:${HackSettings.AutoSpike.mode}`, 0, e);
+                        ctx.fillText(hack + `:${HackSettings.AutoSpike.mode}`, 0, e);
+                    }
+                    else {
+                        ctx.strokeText(hack, 0, e);
+                        ctx.fillText(hack , 0, e);
+                    }
+                    e += 20
+                }
+            }
+        }
+    } else {
+        ctx.clearRect(0, 0, canw, canh);
+        if (loader.is_run)
+            loader.draw();
+        else if (ui.is_run)
+            ui.draw();
+        else if (scoreboard.is_run)
+            scoreboard.draw();
+
+    }
 
     /*for(let i = 0; i < window.globalData.length; i++) {
         const elemt = window.globalData[i];
@@ -56907,6 +57325,7 @@ function draw(timestamp) {
         
     }*/
 };
+
 
 window.navigator.entries = {
 	nt: NetworkClient,
