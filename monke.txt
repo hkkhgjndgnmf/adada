@@ -38337,7 +38337,7 @@ function draw_chest() {
 		ctx.strokeStyle = "black", 
 		ctx.lineWidth = 7, 
 		ctx.strokeText(this.action / 2 - 1, user.cam.x + this.x - 32, user.cam.y + this.y - 12),
-	    ctx.strokeText("x" + this.info, user.cam.x +this.x - 32, user.cam.y + this.y + 20), 
+	    ctx.strokeText("x" + this.info, user.cam.x + this.x - 32, user.cam.y + this.y + 20), 
 		ctx.fillStyle = "white", ctx.fillText(this.action / 2 - 1, user.cam.x + this.x - 32, user.cam.y + this.y - 12),
 		ctx.fillText(this.action / 2 - 1, user.cam.x + this.x - 32, user.cam.y + this.y - 12),
 		ctx.fillText("x" + this.info, user.cam.x + this.x - 32, user.cam.y + this.y + 20),
@@ -38486,7 +38486,7 @@ function draw_roof(id) {
 	else
 		this.opacity = Math.min(this.opacity + delta, 1);
 	var old = ctx.globalAlpha;
-	ctx.globalAlpha *= this.opacity;
+	ctx.globalAlpha = 0.3;
 	ctxDrawImage(ctx, img, (-w / 2) + x, (-h / 2) + y, w, h);
 	ctx.globalAlpha = old;
 	ctx.restore();
@@ -47046,6 +47046,7 @@ function Item(type, pid, id, x, y, angle, action, info, speed, extra) {
 				this.info = this.info > 8000 ? this.info - 8192 : this.info;
 				this.action = action;
 			};
+			console.log	(this)
 			this.draw = draw_chest;
 			this.hit = {
 				anim: new Utils.LinearAnimation(false, 1, 1, 0, 10, 10),
