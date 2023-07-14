@@ -202,87 +202,6 @@ let chat_input = document.getElementById('chat_block');
 if (chat_input == undefined || nickname_input == undefined) location.reload();
 
 
-/* DOGSHIT LEGACY CODE START */
-
-function arrayBufferToBase64(buffer) {
-    let binary = '';
-    const bytes = new Uint8Array(buffer);
-    const len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-  }
-
-  async function decryptMessage(encryptedMessage, privateKey) {
-    const decrypted = await window.crypto.subtle.decrypt(
-      {
-        name: 'RSA-OAEP',
-      },
-      privateKey,
-      base64ToArrayBuffer(encryptedMessage)
-    );
-  
-    return new TextDecoder().decode(decrypted);
-  }
-function base64ToArrayBuffer(base64) {
-    const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; ++i) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes.buffer;
-}
-async function importPublicKey(pem) {
-    const pemHeader = "-----BEGIN PUBLIC KEY-----";
-const pemFooter = "-----END PUBLIC KEY-----";
-let pemContents = pem.replace(pemHeader, "")
-                 .replace(pemFooter, "")
-                 .replace(/\n/g, "")
-                 .replace(/\r/g, "")
-                 .replace(/\s/g, "")
-                 .trim();
-    const binaryDerString = window.atob(pemContents);
-  
-    const binaryDer = str2ab(binaryDerString);
-
-    return window.crypto.subtle.importKey(
-        "spki",
-        binaryDer,
-        {
-            name: "RSA-OAEP",
-            hash: {name: "SHA-256"}
-        },
-        true,
-        ["encrypt"]
-    );
-}
-
-function str2ab(str) {
-    const buf = new ArrayBuffer(str.length);
-    const bufView = new Uint8Array(buf);
-    for (let i = 0, strLen = str.length; i < strLen; i++) {
-        bufView[i] = str.charCodeAt(i);
-    }
-    return buf;
-}
-
-
-async function encryptData(publicKey, data) {
-    const encoder = new TextEncoder();
-    const encodedData = encoder.encode(JSON.stringify(data));
-    return window.crypto.subtle.encrypt(
-        {
-            name: "RSA-OAEP",
-        },
-        publicKey,
-        encodedData
-    );
-}
-
-/* DOGSHIT LEGACY CODE END */
-
 window.FnUtils = {
     isPlayerHoldingWeapon: (a, b) => {
         switch(a.right)  {
@@ -326,6 +245,13 @@ window.FnUtils = {
         for (var i = 1; i < ui8.length; i++)
             window.team.push(ui8[i]);
         FnUtils.updateAllys();
+    },
+    encrypt_message: (message) => {
+        const cipherText = CryptoJS.AES.encrypt(JSON.stringify(message), this.serverPublicKey, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        return cipherText.toString();
     },
     new_teammate: (id) => {
         window.team.push(id)
@@ -383,7 +309,7 @@ window.FnUtils = {
     },
     updateAllys: () => {
         /*
-        for (var key in ITEMS_TO_CHECK) {
+        for (var key in ITEMS_TO_CHECK) { //doesnt work smh
             for (let e = 0; e < world.units[ITEMS_TO_CHECK[key]]; e++) {
                 world.units[ITEMS_TO_CHECK[key]][e].ally = window.playerID === world.units[ITEMS_TO_CHECK[key]][e].pid || FnUtils.checkAlly(world.units[ITEMS_TO_CHECK[key]][e].pid)
             }
@@ -866,22 +792,11 @@ async function cheatInterval () {
                 switch (HackSettings.AutoSpike.mode) {
                     case false:
                         if(!window.HackSettings.AutoSpike.canSend) break;
-                        let encrypted_angle = await encryptData(serverPublicKey, realAngle)
-                        window.instance.send(JSON.stringify([102, type, arrayBufferToBase64(encrypted_angle), 0]))
+                        let encrypted_angle = FnUtils.encrypt_message(realAngle)
+                        window.instance.send(JSON.stringify([102, type, encrypted_angle, 0]))
                         window.HackSettings.AutoSpike.lastSend = performance.now();
                     break;
                     case true: {
-                        if(!window.HackSettings.AutoSpike.canSend) break;
-                        for (let extra = 0; extra <= HackSettings.AutoSpike.extra; extra += 2) {
-                            let encrypted_angle2 = await encryptData(serverPublicKey, (extra + realAngle) % 255) 
-                            let encrypted_angle3 = await encryptData(serverPublicKey, (realAngle - extra + 255) % 255)
-                            if (extra <= 2) {
-                                let encrypted_angle1 = await encryptData(serverPublicKey, realAngle)
-                                window.instance.send(JSON.stringify([102, type, arrayBufferToBase64(encrypted_angle1), 0]));
-                            }
-                            window.instance.send(JSON.stringify([102, type, arrayBufferToBase64(encrypted_angle2), 0]))
-                            window.instance.send(JSON.stringify([102, type, arrayBufferToBase64(encrypted_angle3), 0]))
-                        }
                         window.HackSettings.AutoSpike.lastSend = performance.now();
                     }
                     break;
