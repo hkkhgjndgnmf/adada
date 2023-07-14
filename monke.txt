@@ -454,7 +454,7 @@ window.WebSocket = new Proxy(window.WebSocket, {
 
 let push = Array.prototype.push;
 Array.prototype.push = function(item) {
-    if (item && item.info && item.trigger && inventoryHook < 1) inventoryHook += 1, window.inventory = this; //fix issue
+    if (item && item.info != null && item.trigger != null) window.inventory = this; //fix issue
     if (item && item.type != null && item.id != null && item.x && item.y) {
         if (item.type === 0 && item.pid === window.playerID) window.player = item;
         switch (item.type) {
