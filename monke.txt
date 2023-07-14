@@ -382,10 +382,66 @@ window.FnUtils = {
         return 0
     },
     updateAllys: () => {
+        /*
         for (var key in ITEMS_TO_CHECK) {
             for (let e = 0; e < world.units[ITEMS_TO_CHECK[key]]; e++) {
                 world.units[ITEMS_TO_CHECK[key]][e].ally = window.playerID === world.units[ITEMS_TO_CHECK[key]][e].pid || FnUtils.checkAlly(world.units[ITEMS_TO_CHECK[key]][e].pid)
             }
+        }
+        */
+        for (let e = 0; e < world.units[5].length; e++) {
+            world.units[5][e].ally = window.playerID === world.units[5][e].pid || FnUtils.checkAlly(world.units[5][e].pid)
+        }
+        for (let e = 0; e < world.units[12].length; e++) {
+            world.units[12][e].ally = window.playerID === world.units[12][e].pid || FnUtils.checkAlly(world.units[12][e].pid)
+        }
+        for (let e = 0; e < world.units[13].length; e++)  {
+            world.units[13][e].ally = window.playerID === world.units[13][e].pid || FnUtils.checkAlly(world.units[13][e].pid)
+        }
+        for (let e = 0; e < world.units[14].length; e++) {
+            world.units[14][e].ally = window.playerID === world.units[14][e].pid || FnUtils.checkAlly(world.units[14][e].pid)
+        }
+        for (let e = 0; e < world.units[20].length; e++) {
+            world.units[20][e].ally = window.playerID === world.units[20][e].pid || FnUtils.checkAlly(world.units[20][e].pid)
+        }
+        for (let e = 0; e < world.units[52].length; e++) {
+            world.units[52][e].ally = window.playerID === world.units[52][e].pid || FnUtils.checkAlly(world.units[52][e].pid)
+        }
+        for (let e = 0; e < world.units[45].length; e++) {
+            world.units[45][e].ally = window.playerID === world.units[45][e].pid || FnUtils.checkAlly(world.units[45][e].pid)
+        }
+        for (let e = 0; e < world.units[46].length; e++) {
+            world.units[46][e].ally = window.playerID === world.units[46][e].pid || FnUtils.checkAlly(world.units[46][e].pid)
+        }
+        for (let e = 0; e < world.units[47].length; e++) {
+            world.units[47][e].ally = window.playerID === world.units[47][e].pid || FnUtils.checkAlly(world.units[47][e].pid)
+        }
+        for (let e = 0; e < world.units[48].length; e++) {
+            world.units[48][e].ally = window.playerID === world.units[48][e].pid || FnUtils.checkAlly(world.units[48][e].pid)
+        }
+        for (let e = 0; e < world.units[49].length; e++) {
+            world.units[49][e].ally = window.playerID === world.units[49][e].pid || FnUtils.checkAlly(world.units[49][e].pid)
+        }
+        for (let e = 0; e < world.units[53].length; e++) {
+            world.units[53][e].ally = window.playerID === world.units[53][e].pid || FnUtils.checkAlly(world.units[53][e].pid)
+        }
+        for (let e = 0; e < world.units[10].length; e++) {
+            world.units[10][e].ally = window.playerID === world.units[10][e].pid || FnUtils.checkAlly(world.units[10][e].pid)
+        }
+        for (let e = 0; e < world.units[15].length; e++) {
+            world.units[15][e].ally = window.playerID === world.units[15][e].pid || FnUtils.checkAlly(world.units[15][e].pid)
+        }
+        for (let e = 0; e < world.units[16].length; e++) {
+            world.units[16][e].ally = window.playerID === world.units[16][e].pid || FnUtils.checkAlly(world.units[16][e].pid)
+        }
+        for (let e = 0; e < world.units[17].length; e++) {
+            world.units[17][e].ally = window.playerID === world.units[17][e].pid || FnUtils.checkAlly(world.units[17][e].pid)
+        }
+        for (let e = 0; e < world.units[21].length; e++) {
+            world.units[21][e].ally = window.playerID === world.units[21][e].pid || FnUtils.checkAlly(world.units[21][e].pid)
+        }
+        for (let e = 0; e < world.units[51].length; e++) {
+            world.units[51][e].ally = window.playerID === world.units[51][e].pid || FnUtils.checkAlly(world.units[51][e].pid)
         }
     },
     findItem: (id) => {
