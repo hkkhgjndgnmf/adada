@@ -361,7 +361,7 @@ window.FnUtils = {
     },
     updateAllys: () => {
         for (var key in ITEMS_TO_CHECK) {
-            for (let p = 0; p < world.units[ITEMS_TO_CHECK[key]]; p++) {
+            for (let e = 0; e < world.units[ITEMS_TO_CHECK[key]]; e++) {
                 world.units[ITEMS_TO_CHECK[key]][e].ally = window.playerID === world.units[ITEMS_TO_CHECK[key]][e].pid || FnUtils.checkAlly(world.units[ITEMS_TO_CHECK[key]][e].pid)
             }
         }
