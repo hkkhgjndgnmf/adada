@@ -134,6 +134,13 @@ window.team = [];
 window.world = {
     units: new Array (101),
 };
+window.gauges = {
+    realhp: 200,
+    l: 1,
+    HPTimer: 0,
+    GaugeTimer: 0
+};
+
 for (var i = 0; i < window.world.units.length; i++)
     window.world.units[i] = [];
 
@@ -349,7 +356,22 @@ window.FnUtils = {
             window.world.units[i] = [];
         window.token_id = msg[12].toString();
         window.team = msg[8]
+        window.gauges.realhp = 200;
         FnUtils.updateAllys();
+        window.gauges.HPTimer = new Date().getTime();
+        window.gauges.GaugeTimer = new Date().getTime();
+    },
+    gauges: (life, food, cold, thirst, oxygen, warm, bandage) => {
+        if (Math.floor(11 - (Date.now() - window.gauges.HPTimer) / 1000) < 5 || life / 100 > window.gauges.l) window.gauges.HPTimer = new Date().getTime();
+        window.gauges.GaugeTimer = new Date().getTime();
+        window.gauges.realhp = life * 2;
+        window.gauges.l = life / 100;
+
+    },
+    gauges_life: (life, bandage) => {
+        window.gauges.realhp = life * 2;
+        window.gauges.l = life / 100;
+
     },
     import_key: async (msg) => {
         serverPublicKey = await importPublicKey(msg[1]);
@@ -398,6 +420,11 @@ window.WebSocket = new Proxy(window.WebSocket, {
             } else {
                 var ui8 = new Uint8Array(evt.data);
                 switch (ui8[0]) {
+
+                    case 16:
+						window.FnUtils.gauges(ui8[1], ui8[2], ui8[3], ui8[4], ui8[5], ui8[6], ui8[7]);
+					break;
+                    
                     case 31:
                         window.FnUtils.join_team(ui8);
                     break;
@@ -413,6 +440,10 @@ window.WebSocket = new Proxy(window.WebSocket, {
                     case 34:
                         window.FnUtils.destroy_team();
                     break;
+
+                    case 37:
+						window.FnUtils.gauges_life(ui8[1], ui8[2]);
+					break;
                 }
             }
         })
@@ -827,9 +858,31 @@ window.addEventListener("keyup", function (event) {
 
 
 CanvasRenderingContext2D.prototype.drawImage = new Proxy(CanvasRenderingContext2D.prototype.drawImage, {
-    apply: function(target, _this, _args) {
+    apply: function(target, _this, arguments) {
         if (HackSettings.Xray.enabled) _this.globalAlpha = HackSettings.Xray.opacity;
-        return Function.prototype.apply.apply(target, [_this, _args]);
+        return Function.prototype.apply.apply(target, [_this, arguments]);
+    }
+});
+
+CanvasRenderingContext2D.prototype.fillRect = new Proxy(CanvasRenderingContext2D.prototype.fillRect, {
+    apply: function(target, _this, arguments) {
+        let date = Date.now();
+        if(_this.fillStyle === "#69a148"){
+            _this.save()
+            _this.font = '34px Baloo Paaji';
+            _this.strokeStyle = "black";
+            _this.fillStyle = "red";
+            _this.lineWidth = 7;
+            _this.strokeText(window.gauges.realhp + "hp", arguments[0] - 120 ,arguments[1] + 20);
+            _this.fillText(window.gauges.realhp + "hp", arguments[0] - 120 ,arguments[1] + 20); 
+            _this.strokeText(Math.floor(11 - (date - window.gauges.HPTimer) / 1000) + "s", arguments[0] + 186, arguments[1] + 20);
+            _this.fillText(Math.floor(11 - (date - window.gauges.HPTimer) / 1000) + "s", arguments[0] + 186, arguments[1] + 20);
+            _this.strokeText(Math.floor(6 - (date - window.gauges.GaugeTimer) / 1000) + "s", arguments[0] + 425 , arguments[1] + 20);
+            _this.fillText(Math.floor(6 - (date - window.gauges.GaugeTimer) / 1000) + "s", arguments[0] + 425 , arguments[1] + 20);
+            _this.restore()
+
+        }
+        return Function.prototype.apply.apply(target, [_this, arguments]);
     }
 });
 
@@ -846,39 +899,13 @@ function checker (timestamp) {
     } else {
         window.HackSettings.AutoSpike.canSend = false;
     }
-    /*
-    if (HackSettings.ListEnabledHacks.enabled) {
-        ctx.save();
-        let e = 15;
-        for (hack in HackSettings) {
-            if (HackSettings[hack].draw && HackSettings[hack].enabled) {
-                ctx.font = "18px Baloo Paaji";
-                ctx.strokeStyle = "black";
-                ctx.lineWidth = 7;
-                ctx.fillStyle = "red";
-                if (hack == "AutoSpike") {
-                    ctx.strokeText(hack + `:${HackSettings.AutoSpike.mode}`, 0, e);
-                    ctx.fillText(hack + `:${HackSettings.AutoSpike.mode}`, 0, e);
-                }
-                else {
-                    ctx.strokeText(hack, 0, e);
-                    ctx.fillText(hack , 0, e);
-                }
-                e += 20
-            }
-        }
-    }
-    */
 };
 
 checker(0)
 
 
 setTimeout(() => {
-    /*
-    var can = document.getElementById('game_canvas');
-    var ctx = can.getContext('2d');
-    */
+    if (sprite == undefined ) location.reload();
     sprite[10000] = [WoodSpikeAlly, WoodSpikeAlly];
     sprite[10001] = [WoodSpikeEnemy, WoodSpikeEnemy];
     
