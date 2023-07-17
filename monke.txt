@@ -1,6 +1,7 @@
 
 let oldDecrypt = window.crypto.subtle.decrypt;
 let oldProxy = window.Proxy;
+let didOnce = 0;
 setTimeout(() => {
 
     window.HackSettings = {
@@ -964,118 +965,65 @@ setTimeout(() => {
         } else {
             window.HackSettings.AutoSpike.canSend = false;
         }
+
+        if (sprite != undefined && didOnce < 1) {
+            didOnce += 1;
+            sprite[10000] = [WoodSpikeAlly, WoodSpikeAlly];
+            sprite[10001] = [WoodSpikeEnemy, WoodSpikeEnemy];
+            
+            sprite[10002] = [StoneSpikeAlly, StoneSpikeAlly];
+            sprite[10003] = [StoneSpikeEnemy, StoneSpikeEnemy];
+            
+            sprite[10004] = [GoldSpikeAlly, GoldSpikeAlly];
+            sprite[10005] = [GoldSpikeEnemy, GoldSpikeEnemy];
+            
+            sprite[10006] = [DiamondSpikeAlly, DiamondSpikeAlly];
+            sprite[10007] = [DiamondSpikeEnemy, DiamondSpikeEnemy];
+            
+            sprite[10008] = [AmethystSpikeAlly, AmethystSpikeAlly];
+            sprite[10009] = [AmethystSpikeEnemy, AmethystSpikeEnemy];
+            
+            sprite[10010] = [ReiditeSpikeAlly, ReiditeSpikeAlly];
+            sprite[10011] = [ReiditeSpikeEnemy, ReiditeSpikeEnemy];
+            
+            
+            sprite[10012] = [WoodSpikeDoorAlly, WoodSpikeDoorAlly];
+            sprite[10013] = [WoodSpikeDoorEnemy, WoodSpikeDoorEnemy];
+            
+            sprite[10014] = [StoneSpikeDoorAlly, StoneSpikeDoorAlly];
+            sprite[10015] = [StoneSpikeDoorEnemy, StoneSpikeDoorEnemy];
+            
+            sprite[10016] = [GoldSpikeDoorAlly, GoldSpikeDoorAlly];
+            sprite[10017] = [GoldSpikeDoorEnemy, GoldSpikeDoorEnemy];
+            
+            sprite[10018] = [DiamondSpikeDoorAlly, DiamondSpikeDoorAlly];
+            sprite[10019] = [DiamondSpikeDoorEnemy, DiamondSpikeDoorEnemy];
+            
+            sprite[10020] = [AmethystSpikeDoorAlly, AmethystSpikeDoorAlly];
+            sprite[10021] = [AmethystSpikeDoorEnemy, AmethystSpikeDoorEnemy];
+            
+            sprite[10022] = [ReiditeSpikeDoorAlly, ReiditeSpikeDoorAlly];
+            sprite[10023] = [ReiditeSpikeDoorEnemy, ReiditeSpikeDoorEnemy];
+            
+            sprite[10024] = [WoodDoorAlly, WoodDoorAlly];
+            sprite[10025] = [WoodDoorEnemy, WoodDoorEnemy];
+            
+            sprite[10026] = [StoneDoorAlly, StoneDoorAlly];
+            sprite[10027] = [StoneDoorEnemy, StoneDoorEnemy];
+            
+            sprite[10028] = [GoldDoorAlly, GoldDoorAlly];
+            sprite[10029] = [GoldDoorEnemy, GoldDoorEnemy];
+            
+            sprite[10030] = [DiamondDoorAlly, DiamondDoorAlly];
+            sprite[10031] = [DiamondDoorEnemy, DiamondDoorEnemy];
+            
+            sprite[10032] = [AmethystDoorAlly, AmethystDoorAlly];
+            sprite[10033] = [AmethystDoorEnemy, AmethystDoorEnemy];
+            
+            sprite[10034] = [ReiditeDoorAlly, ReiditeDoorAlly];
+            sprite[10035] = [ReiditeDoorEnemy, ReiditeDoorEnemy];
+        } 
     };
     
-    checker(0)
-    sprite[10000] = [WoodSpikeAlly, WoodSpikeAlly];
-    sprite[10001] = [WoodSpikeEnemy, WoodSpikeEnemy];
-    
-    sprite[10002] = [StoneSpikeAlly, StoneSpikeAlly];
-    sprite[10003] = [StoneSpikeEnemy, StoneSpikeEnemy];
-    
-    sprite[10004] = [GoldSpikeAlly, GoldSpikeAlly];
-    sprite[10005] = [GoldSpikeEnemy, GoldSpikeEnemy];
-    
-    sprite[10006] = [DiamondSpikeAlly, DiamondSpikeAlly];
-    sprite[10007] = [DiamondSpikeEnemy, DiamondSpikeEnemy];
-    
-    sprite[10008] = [AmethystSpikeAlly, AmethystSpikeAlly];
-    sprite[10009] = [AmethystSpikeEnemy, AmethystSpikeEnemy];
-    
-    sprite[10010] = [ReiditeSpikeAlly, ReiditeSpikeAlly];
-    sprite[10011] = [ReiditeSpikeEnemy, ReiditeSpikeEnemy];
-    
-    
-    sprite[10012] = [WoodSpikeDoorAlly, WoodSpikeDoorAlly];
-    sprite[10013] = [WoodSpikeDoorEnemy, WoodSpikeDoorEnemy];
-    
-    sprite[10014] = [StoneSpikeDoorAlly, StoneSpikeDoorAlly];
-    sprite[10015] = [StoneSpikeDoorEnemy, StoneSpikeDoorEnemy];
-    
-    sprite[10016] = [GoldSpikeDoorAlly, GoldSpikeDoorAlly];
-    sprite[10017] = [GoldSpikeDoorEnemy, GoldSpikeDoorEnemy];
-    
-    sprite[10018] = [DiamondSpikeDoorAlly, DiamondSpikeDoorAlly];
-    sprite[10019] = [DiamondSpikeDoorEnemy, DiamondSpikeDoorEnemy];
-    
-    sprite[10020] = [AmethystSpikeDoorAlly, AmethystSpikeDoorAlly];
-    sprite[10021] = [AmethystSpikeDoorEnemy, AmethystSpikeDoorEnemy];
-    
-    sprite[10022] = [ReiditeSpikeDoorAlly, ReiditeSpikeDoorAlly];
-    sprite[10023] = [ReiditeSpikeDoorEnemy, ReiditeSpikeDoorEnemy];
-    
-    sprite[10024] = [WoodDoorAlly, WoodDoorAlly];
-    sprite[10025] = [WoodDoorEnemy, WoodDoorEnemy];
-    
-    sprite[10026] = [StoneDoorAlly, StoneDoorAlly];
-    sprite[10027] = [StoneDoorEnemy, StoneDoorEnemy];
-    
-    sprite[10028] = [GoldDoorAlly, GoldDoorAlly];
-    sprite[10029] = [GoldDoorEnemy, GoldDoorEnemy];
-    
-    sprite[10030] = [DiamondDoorAlly, DiamondDoorAlly];
-    sprite[10031] = [DiamondDoorEnemy, DiamondDoorEnemy];
-    
-    sprite[10032] = [AmethystDoorAlly, AmethystDoorAlly];
-    sprite[10033] = [AmethystDoorEnemy, AmethystDoorEnemy];
-    
-    sprite[10034] = [ReiditeDoorAlly, ReiditeDoorAlly];
-    sprite[10035] = [ReiditeDoorEnemy, ReiditeDoorEnemy];
-    
-    setInterval(() => {
-        sprite[10000] = [WoodSpikeAlly, WoodSpikeAlly];
-        sprite[10001] = [WoodSpikeEnemy, WoodSpikeEnemy];
-        
-        sprite[10002] = [StoneSpikeAlly, StoneSpikeAlly];
-        sprite[10003] = [StoneSpikeEnemy, StoneSpikeEnemy];
-        
-        sprite[10004] = [GoldSpikeAlly, GoldSpikeAlly];
-        sprite[10005] = [GoldSpikeEnemy, GoldSpikeEnemy];
-        
-        sprite[10006] = [DiamondSpikeAlly, DiamondSpikeAlly];
-        sprite[10007] = [DiamondSpikeEnemy, DiamondSpikeEnemy];
-        
-        sprite[10008] = [AmethystSpikeAlly, AmethystSpikeAlly];
-        sprite[10009] = [AmethystSpikeEnemy, AmethystSpikeEnemy];
-        
-        sprite[10010] = [ReiditeSpikeAlly, ReiditeSpikeAlly];
-        sprite[10011] = [ReiditeSpikeEnemy, ReiditeSpikeEnemy];
-        
-        
-        sprite[10012] = [WoodSpikeDoorAlly, WoodSpikeDoorAlly];
-        sprite[10013] = [WoodSpikeDoorEnemy, WoodSpikeDoorEnemy];
-        
-        sprite[10014] = [StoneSpikeDoorAlly, StoneSpikeDoorAlly];
-        sprite[10015] = [StoneSpikeDoorEnemy, StoneSpikeDoorEnemy];
-        
-        sprite[10016] = [GoldSpikeDoorAlly, GoldSpikeDoorAlly];
-        sprite[10017] = [GoldSpikeDoorEnemy, GoldSpikeDoorEnemy];
-        
-        sprite[10018] = [DiamondSpikeDoorAlly, DiamondSpikeDoorAlly];
-        sprite[10019] = [DiamondSpikeDoorEnemy, DiamondSpikeDoorEnemy];
-        
-        sprite[10020] = [AmethystSpikeDoorAlly, AmethystSpikeDoorAlly];
-        sprite[10021] = [AmethystSpikeDoorEnemy, AmethystSpikeDoorEnemy];
-        
-        sprite[10022] = [ReiditeSpikeDoorAlly, ReiditeSpikeDoorAlly];
-        sprite[10023] = [ReiditeSpikeDoorEnemy, ReiditeSpikeDoorEnemy];
-        
-        sprite[10024] = [WoodDoorAlly, WoodDoorAlly];
-        sprite[10025] = [WoodDoorEnemy, WoodDoorEnemy];
-        
-        sprite[10026] = [StoneDoorAlly, StoneDoorAlly];
-        sprite[10027] = [StoneDoorEnemy, StoneDoorEnemy];
-        
-        sprite[10028] = [GoldDoorAlly, GoldDoorAlly];
-        sprite[10029] = [GoldDoorEnemy, GoldDoorEnemy];
-        
-        sprite[10030] = [DiamondDoorAlly, DiamondDoorAlly];
-        sprite[10031] = [DiamondDoorEnemy, DiamondDoorEnemy];
-        
-        sprite[10032] = [AmethystDoorAlly, AmethystDoorAlly];
-        sprite[10033] = [AmethystDoorEnemy, AmethystDoorEnemy];
-        
-        sprite[10034] = [ReiditeDoorAlly, ReiditeDoorAlly];
-        sprite[10035] = [ReiditeDoorEnemy, ReiditeDoorEnemy];
-    }, 60000)
+    checker(0)    
 }, 5000)
